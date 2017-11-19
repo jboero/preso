@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en.png">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>WebGL through Three JS</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<!--    <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/theme/default.css">
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="css/gh-fork-ribbon.css">
+
+    <script>
+      // If the query includes 'print-pdf' we'll use the PDF print sheet
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if IE]>
+    <link rel="stylesheet" href="css/gh-fork-ribbon.ie.css">
+    <![endif]-->
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <script src="build/three.js"></script>
+    <script src="js/loaders/ColladaLoader.js"></script>
+    <script src="js/Detector.js"></script>
+
+	 <div id="background"/>
+<script>
+// RedHat background script
+// Added 6/Sep/2015 by John Boero - johnnyb@redhat.com
+var fedContainer;
+
+var fedCam, fedScene, fedRenderer;
+var target = new THREE.Vector3(-3, 3, 3);
+var particleLight, dae;
+var loader = new THREE.ColladaLoader();
+
+loader.options.convertUpAxis = true;
+
+// Use blue fedora model if Fedora
+// Note that I've not had good luck with json models. Use collada (dae).
+// You can import/edit/export from Blender.
+loader.load( 'models/hashicorp/hashicorp.dae', 
+	function ( collada )
+	{
+		dae = collada.scene;
+
+		dae.scale.x = dae.scale.y = dae.scale.z = 4;
+		dae.updateMatrix();
+	
+		fedInit();
+		fedAnimate();
+	}
+);
+
+function fedInit()
+{
+	fedContainer = document.getElementById( 'background' );
+
+	fedCam = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+	fedCam.position.set( 2, 2, 3 );
+
+	fedScene = new THREE.Scene();
+	fedScene.add( dae );
+
+	particleLight = new THREE.Mesh( new THREE.SphereGeometry( 4, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0x333333 } ) );
+	particleLight.intensity = 10;
+	fedScene.add( particleLight );
+
+	//fedScene.add( new THREE.AmbientLight( 0x040404 ) );
+
+	var directionalLight = new THREE.DirectionalLight( 0x888888 );
+	//var directionalLight = new THREE.HemisphereLight();
+	directionalLight.intensity = 4;
+	directionalLight.position.x = -1;
+	directionalLight.position.y = 1;
+	directionalLight.position.z = -1;
+	directionalLight.position.normalize();
+	fedScene.add( directionalLight );
+	
+	var pointLight = new THREE.PointLight( 0x444444, 4 );
+	pointLight.intensity=10;
+	particleLight.add( pointLight );
+
+	fedRenderer = new THREE.WebGLRenderer( {alpha:true} );
+	fedRenderer.setPixelRatio( window.devicePixelRatio );
+	fedRenderer.setSize( window.innerWidth, window.innerHeight );
+	fedRenderer.setClearColor( 0x000000 );
+	fedContainer.appendChild( fedRenderer.domElement );
+
+	window.addEventListener( 'resize', fedOnWindowResize, false );
+	fedCam.position.x = fedCam.position.y = fedCam.position.z = 7;
+}
+
+function fedOnWindowResize()
+{
+	fedCam.aspect = window.innerWidth / window.innerHeight;
+	fedCam.updateProjectionMatrix();
+
+	fedRenderer.setSize( window.innerWidth, window.innerHeight );
+}
+
+function fedAnimate()
+{
+	var timer = Date.now() * 0.0002;
+	requestAnimationFrame( fedAnimate );
+
+	fedCam.lookAt( target );
+
+	particleLight.position.x = Math.sin( timer / 8 ) * 3009;
+	particleLight.position.y = Math.cos( timer / 7 ) * 4000;
+	particleLight.position.z = Math.cos( timer / 6 ) * 3009;
+
+	dae.rotateZ(0.0008 * Math.sin(timer / 18));
+	dae.rotateY(0.0009 * Math.cos(timer / 25));
+	dae.rotateZ(0.0011 * Math.sin(timer / 30));
+
+	fedRender();
+}
+
+function fedRender()
+{
+	fedRenderer.render( fedScene, fedCam );
+}
+
+</script>
+
+    <div class="reveal">
+
+      <!-- Used to fade in a background when a specific slide state is reached -->
+      <div class="state-background"></div>
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+      
+	<section>
+        <section>
+          <h1>Hashicorp</h1>
+          <h2>Cloud Infrastructure Automation</h2>
+		  <img src="images/hashicorplogo.png">
+		  <h4><a href="mailto:john.boero@hashicorp.com">JohnnyB@hashicorp.com</a></h4>
+        </section>
+		<section data-markdown class="center">
+			<img src="images/stack1.png">
+        </section>
+		<section>
+        <h1>Suite:</h1>
+		<ul><h3>
+			<li><b>Consul</b> service discovery, cluster management.</li>
+			<li><b>Nomad</b> cluster and container scheduling.</li>
+			<li><b>Vault</b> secure secret encryption.</li>
+			<li><b>Terraform</b> runtime configuration.</li>
+			<li><b>Vagrant</b> easy and flexible VM orchestration.</li>
+			<li><b>Packer</b> consistent and easy machine images building.</li>
+		</ul></h3>
+        </section>
+	</section>
+
+	<section>
+		<section><img src="images/consul.png"></section>
+        <section><img src="images/consul1.png"></section>
+        <section><img src="images/consul2.png"></section>
+        <section>
+			<h2>Consul DNS Query Interface</h2>
+			Look up services using Consul's built-in DNS server. <br>Support existing infrastructure without any code change.
+            <pre class="float" style="width:100%"><code>
+admin@hashicorp.com: dig web-frontend.service.consul. ANY
+; <<>> DiG 9.8.3-P1 <<>> web-frontend.service.consul. ANY
+;; global options: +cmd
+ 
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 29981
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 0
+;; QUESTION SECTION:
+;web-frontend.service.consul. IN ANY
+ 
+;; ANSWER SECTION:
+web-frontend.service.consul. 0 IN A 10.0.3.83
+web-frontend.service.consul. 0 IN A 10.0.1.10
+</code></pre>
+		</section>
+	</section>
+	
+	<section>
+		<section><img src="images/nomadlogo.png"></section>
+		<section>
+			<h2>What is Nomad?</h2>
+Nomad is a tool for managing a cluster of machines and running applications on them. Nomad abstracts away machines and the location of applications, and instead enables users to declare what they want to run.  Nomad handles where they should run and how to run them.
+			<img src="images/nomad-diagram.png">
+		</section>
+		<section>
+			<ul><li><b>Docker Support:</b> Nomad supports Docker as a first-class workload type. Jobs submitted to Nomad can use the docker driver to easily deploy containerized applications to a cluster. Nomad enforces the user-specified constraints, ensuring the application only runs in the correct region, datacenter, and host environment.
+			<li><b>Operationally Simple:</b> Nomad ships as a single binary, both for clients and servers, and requires no external services for coordination or storage.
+			<li><b>Multi-Datacenter and Multi-Region Aware:</b> Nomad models infrastructure as groups of datacenters which form a larger region. Scheduling operates at the region level allowing for cross-datacenter scheduling. Multiple regions federate together allowing jobs to be registered globally.
+			</ul>
+		</section>
+		<section>
+			<ul><li><b>Flexible Workloads:</b> Nomad has extensible support for task drivers, allowing it to run containerized, virtualized, and standalone applications. Users can easily start Docker containers, VMs, or application runtimes like Java. Nomad supports Linux, Windows, BSD and OSX, providing the flexibility to run any workload.
+			<li><b>Built for Scale:</b> Nomad was designed from the ground up to support global scale infrastructure. Nomad is distributed and highly available, using both leader election and state replication to provide availability in the face of failures. Nomad is optimistically concurrent, enabling all servers to participate in scheduling decisions which increases the total throughput and reduces latency to support demanding workloads.
+			</ul>
+		</section>
+	</section>
+	
+	<section>
+		<section><img src="images/vault.png"></section>
+		<section>
+			<img src="images/vault1.png">
+			<b>Vault</b> secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. Vault handles leasing, key revocation, key rolling, and auditing.
+		</section>
+		<section>
+			<ul><li><b>Secret Storage</b> Vault can store your existing secrets, or it can dynamically generate new secrets to control access to third-party resources or provide time-limited credentials for your infrastructure. All data that Vault stores is encrypted. Any dynamically-generated secrets are associated with leases, and Vault will automatically revoke these secrets after the lease period ends. Access control policies provide strict control over who can access what secrets.
+			<li><b>Key Rolling</b> Secrets you store within Vault can be updated at any time. If using Vault's encryption-as-a-service functionality, the keys used can be rolled to a new key version at any time, while retaining the ability to decrypt values encrypted with past key versions. For dynamically-generated secrets, configurable maximum lease lifetimes ensure that key rolling is easy to enforce.
+			</ul>
+		</section>
+		<section>
+			<ul><li><b>Audit Logs</b>
+			Vault stores a detailed audit log of all authenticated client interaction: authentication, token creation, secret access, secret revocation, and more. Audit logs can be sent to multiple backends to ensure redundant copies. Paired with Vault's strict leasing policies, operators can easily trace the lifetime and origin of any secret.
+			</ul>
+		</section>
+	</section>
+	
+	<section>
+		<section><img src="images/terraform.png"></section>
+		<section>
+            <h2>Simple and Powerful</h2>
+Terraform enables you to safely and predictably create, change, and improve infrastructure. It is an open source tool that codifies APIs into declarative configuration files that can be shared amongst team members, treated as code, edited, reviewed, and versioned.
+			<img src="images/terraform1.png">
+		</section>
+		<section>
+		<ul><li><b>INFRASTRUCTURE AS CODE</b><br> Define infrastructure as code to increase operator productivity and transparency.
+        <li><b>COLLABORATE & SHARE</b><br> Terraform configuration can be stored in version control, shared, and collaborated on by teams of operators.
+        <li><b>EVOLVE YOUR INFRASTRUCTURE</b><br> Track the complete history of infrastructure versions.
+        <li><b>AUTOMATION FRIENDLY</b><br> If it can be codified, it can be automated.
+        </ul>
+		</section>
+        <section>
+            <h2>COMPOSING RESOURCES</h2> Use attributes from other resources to create an infrastructure composed of resources across multiple providers.
+<pre class="float" style="width:100%"><code>
+resource "digitalocean_droplet" "web" {
+  name   = "tf-web"
+  size   = "512mb"
+  image  = "centos-5-8-x32"
+  region = "sfo1"
+}
+ 
+resource "dnsimple_record" "hello" {
+  domain = "example.com"
+  name   = "test"
+  value  = "${digitalocean_droplet.web.ipv4_address}"
+  type   = "A"
+}
+</code></pre>
+        </section>
+        <section>
+            <h2>FAST, SIMPLIFIED INTERACTION</h2> Simple and intuitive configuration makes even the most complicated services approachable: no more web consoles, loading bars, or confusing CLI clients.
+<pre class="float" style="width:100%"><code>
+resource "aws_elb" "frontend" {
+  name = "frontend-load-balancer"
+  listener {
+    instance_port     = 8000
+    instance_protocol = "http"
+    lb_port           = 80
+    lb_protocol       = "http"
+  }
+ 
+  instances = ["${aws_instance.app.*.id}"]
+}
+ 
+resource "aws_instance" "app" {
+  count = 5
+ 
+  ami           = "ami-408c7f28"
+  instance_type = "t1.micro"
+}
+</code></pre>
+        </section>
+	</section>
+	
+    <section>
+		<section><img src="images/vagrant.png"></section>
+		<section>
+            <h2>Why Vagrant?</h2>
+            <p>To achieve its magic, Vagrant stands on the shoulders of giants. Machines are provisioned on top of VirtualBox, VMware, AWS, or any other provider. Then, industry-standard provisioning tools such as shell scripts, Chef, or Puppet, can automatically install and configure software on the virtual machine.</p>
+            <code> $ vagrant init centos/atomic-host</code>
+		</section>
+		<section><img src="images/vagrant1.png"></section>
+        <section>
+            <h2>Instant Environments</h2>
+            <pre class="small float" style="center; width:120%"><code>
+$  vagrant init centos/atomic-host
+A `Vagrantfile` has been placed in this directory. You are now
+ready to `vagrant up` your first virtual environment! Please read
+the comments in the Vagrantfile as well as documentation on
+`vagrantup.com` for more information on using Vagrant.
+$  vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+==> default: Box 'centos/atomic-host' could not be found. Attempting to find and install...
+    default: Box Provider: virtualbox
+    default: Box Version: >= 0
+==> default: Loading metadata for box 'centos/atomic-host'
+    default: URL: https://vagrantcloud.com/centos/atomic-host
+==> default: Adding box 'centos/atomic-host' (v1710.01) for provider: virtualbox
+    default: Downloading: https://vagrantcloud.com/centos/boxes/atomic-host/versions/1710.01/providers/virtualbox.box
+    default: Progress: 31% (Rate: 3492k/s, Estimated time remaining: 0:02:06)
+    </code></pre>
+        </section>
+		<section>
+            <h2>Simple and Powerful</h2>
+Vagrant provides the same, easy workflow regardless of your role as a developer, operator, or designer. It leverages a declarative configuration file which describes all your software requirements, packages, operating system configuration, users, and more.
+<pre class="small float" style="width:100%"><code>
+$ vagrant init hashicorp/precise645
+ 
+$ vagrant up
+Bringing machine 'default' up with 'virtualbox' provider...
+==> default: Importing base box 'hashicorp/precise64'...
+==> default: Forwarding ports...
+default: 22 (guest) => 2222 (host) (adapter 1)
+==> default: Waiting for machine to boot...
+ 
+$ vagrant ssh
+vagrant@precise64:~$ _
+</code></pre>
+		</section>
+    </section>
+    <section>
+        <section><img src="images/packer.png"></section>
+        <section>
+            <h2>Modern, Automated</h2>
+Packer is easy to use and automates the creation of any type of machine image. It embraces modern configuration management by encouraging you to use automated scripts to install and configure the software within your Packer-made images. Packer brings machine images into the modern age, unlocking untapped potential and opening new opportunities.
+        </section>
+        <section>
+            <pre class="small float" style="center; width:120%"><code>
+$ packer build template.json
+==> virtualbox: virtualbox output will be in this color.
+==> vmware: vmware output will be in this color.
+==> vmware: Copying or downloading ISO. Progress will be reported periodically.
+==> vmware: Creating virtual machine disk
+==> vmware: Building and writing VMX file
+==> vmware: Starting HTTP server on port 8964
+==> vmware: Starting virtual machine...
+==> virtualbox: Downloading VirtualBox guest additions. Progress will be shown periodically.
+==> virtualbox: Copying or downloading ISO. Progress will be reported periodically.
+==> virtualbox: Starting HTTP server on port 8081
+==> virtualbox: Creating virtual machine...
+==> virtualbox: Creating hard drive...
+==> virtualbox: Creating forwarded port mapping for SSH (host port 3213)
+==> virtualbox: Executing custom VBoxManage commands...
+    virtualbox: Executing: modifyvm packer --memory 480
+    virtualbox: Executing: modifyvm packer --cpus 1
+==> virtualbox: Starting the virtual machine...
+==> vmware: Waiting 10s for boot...
+==> virtualbox: Waiting 10s for boot...
+            </code></pre>
+        </section>
+        <section>
+            What about Docker container images?
+            <pre class="small float" style="center; width:120%"><code>
+{
+  "type": "docker",
+  "image": "ubuntu",
+  "commit": true,
+  "changes": [
+    "USER www-data",
+    "WORKDIR /var/www",
+    "ENV HOSTNAME www.example.com",
+    "VOLUME /test1 /test2",
+    "EXPOSE 80 443",
+    "LABEL version=1.0",
+    "ONBUILD RUN date",
+    "CMD [\"nginx\", \"-g\", \"daemon off;\"]",
+    "ENTRYPOINT /var/www/start.sh"
+  ]
+}
+            </code></pre>
+        </section>
+    </section>
+	
+	<!-- end of deck -->
+	
+      </div>
+
+      <!-- The navigational controls UI -->
+      <aside class="controls">
+        <a class="left" href="#">&#x25C4;</a>
+        <a class="right" href="#">&#x25BA;</a>
+        <a class="up" href="#">&#x25B2;</a>
+        <a class="down" href="#">&#x25BC;</a>
+      </aside>
+
+      <!-- Presentation progress bar -->
+      <div class="progress"><span></span></div>
+    </div>
+
+    <!-- Shaders -->
+    <script id="webgl_vshader" type="x-shader/x-vertex">
+      uniform mat4 u_modelViewProjMatrix;
+      uniform mat4 u_normalMatrix;
+      uniform vec3 lightDir;
+
+      attribute vec3 vNormal;
+      attribute vec4 vColor;
+      attribute vec4 vPosition;
+
+      varying float v_Dot;
+      varying vec4 v_Color;
+
+      void main()
+      {
+          gl_Position = u_modelViewProjMatrix * vPosition;
+          v_Color = vec4(1 , 1, 1, 1);
+          vec4 transNormal = u_normalMatrix * vec4(vNormal, 1);
+          v_Dot = max(dot(transNormal.xyz, lightDir), 0.0);
+      }
+    </script>
+
+    <script id="webgl_fshader" type="x-shader/x-fragment">
+      precision mediump float;
+
+      varying float v_Dot;
+      varying vec4 v_Color;
+
+      void main()
+      {
+          gl_FragColor = vec4(v_Color.xyz * v_Dot, v_Color.a);
+      }
+    </script>
+
+    <script id="webgl_bland_fshader" type="x-shader/x-fragment">
+      precision mediump float;
+
+      varying float v_Dot;
+      varying vec4 v_Color;
+
+      void main()
+      {
+          gl_FragColor = vec4(1, 1, 1, 1);
+      }
+    </script>
+
+    <script id="normal_map_vs" type="x-shader/x-vertex">
+      attribute vec3 tangent;
+
+      varying vec4 vPositionV;
+      varying vec3 vNormalV;
+      varying vec3 vTangentV;
+      varying vec2 vTexCoord;
+
+      void main(void) {
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        vPositionV = modelViewMatrix * vec4(position, 1.0);
+        vNormalV = (modelViewMatrix * vec4(normal, 0.0)).xyz;
+        vTangentV = (modelViewMatrix * vec4(tangent, 0.0)).xyz;
+        vTexCoord = uv;
+      }
+    </script>
+
+    <script id="normal_map_fs" type="x-shader/x-fragment">
+      #ifdef GL_ES
+      precision highp float;
+      #endif
+
+      uniform sampler2D map;
+      uniform float uTime;
+
+      varying vec4 vPositionV;
+      varying vec3 vNormalV;
+      varying vec3 vTangentV;
+      varying vec2 vTexCoord;
+
+      void main(void) {
+        vec3 normalT = texture2D(map, vTexCoord).xyz;
+        normalT.y = 1.0 - normalT.y;
+        normalT = 2.0 * normalT - vec3(1.0, 1.0, 1.0);
+        normalT.z *= 10.0;
+
+        vec3 binormalV = cross(vNormalV, vTangentV);
+        vec3 normalV = normalT.x * vTangentV + normalT.y * binormalV + normalT.z * vNormalV;
+
+        normalV = normalize(normalV);
+        vec3 lightV = normalize(vec3(10.0 * cos(uTime), 0.0, 10.0 * sin(uTime)));
+
+        float d = dot(normalV, lightV);
+        float s = dot(reflect(-lightV, normalV), normalize(-vPositionV.xyz));
+        s = pow(s, 30.0);
+
+        vec3 diffuse = vec3(1, 1, 1);
+        vec3 color = diffuse * (0.1 + 0.5 * d + 0.4 * s);
+
+        gl_FragColor = vec4(color, 1.0);
+      }
+    </script>
+
+
+    <script src="lib/js/head.min.js"></script>
+    <script>
+      head.js(
+        "lib/js/jquery.min.js",
+        "lib/js/jquery.hotkeys.js",
+        "lib/js/underscore.min.js",
+        "lib/js/swfobject.js",
+        "lib/js/dat.gui.js",
+        "lib/js/EventEmitter.js",
+
+        "lib/js/three/EffectComposer.js",
+        "lib/js/three/RenderPass.js",
+        "lib/js/three/BloomPass.js",
+        "lib/js/three/ShaderPass.js",
+        "lib/js/three/MaskPass.js",
+
+        // three shaders
+        "lib/js/three/shaders/CopyShader.js",
+        "lib/js/three/shaders/BasicShader.js",
+        "lib/js/three/shaders/DotScreenShader.js",
+        "lib/js/three/shaders/UnpackDepthRGBAShader.js",
+        "lib/js/three/shaders/HorizontalBlurShader.js",
+        "lib/js/three/shaders/VerticalBlurShader.js",
+
+        // js files needed for WebGL specific samples (excluding three js)
+        "lib/js/J3DI.js",
+        "lib/js/J3DIMath.js",
+        "lib/js/webgl-utils.js",
+        "lib/js/webgl-debug.js",
+
+        // App specific js
+        "js/reveal.min.js",
+        "js/stats_bootstrap.js",
+        "js/samples.js",
+        "js/dat.gui.bootstrap.js",
+
+        function() {
+          // Full list of configuration options available here:
+          // https://github.com/hakimel/reveal.js#configuration
+          Reveal.initialize({
+			width: "100%",
+			height: "100%",
+			margin: 0,
+			minScale: 0.5,
+			maxScale: 2,
+
+            controls: true,
+            progress: true,
+            history: true,
+
+				// Adjust or comment this line for no auto-advance mode:
+				//autoSlide: 10000,
+				loop: true,
+
+            transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/linear(2d)
+
+            // Optional libraries used to extend on reveal.js
+            dependencies: [
+              { src: 'lib/js/highlight.js', async: true, callback: function() { window.hljs.initHighlightingOnLoad(); } },
+              { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+              { src: 'lib/js/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+              { src: 'lib/js/data-markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+              { src: 'socket.io/socket.io.js', async: true, condition: function() { return window.location.host === 'localhost:1947'; } },
+              { src: 'plugin/speakernotes/client.js', async: true, condition: function() { return window.location.host === 'localhost:1947'; } },
+              { src: 'js/youtube.js', async: true, condition: function() { return $("#ytplayer").length > 0 } },
+            ]
+          });
+        });
+
+    </script>
+  </body>
+</html>

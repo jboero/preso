@@ -1,0 +1,26 @@
+Vagrant.configure("2") do |config|
+config.vm.box = "centos/atomic-host"
+  config.vm.hostname = "demo-vagrant-01"
+  config.vm.box_url = 'https://github.com/myoung34/vagrant-ovirt4/blob/master/example_box/dummy.box?raw=true'
+
+  config.vm.network :private_network,
+    :ip => '192.168.2.200', :nictype => 'virtio', :netmask => '255.255.255.0', #normal network configuration
+    :ovirt__ip => '192.168.2.13', :ovirt__network_name => 'ovirtmgmt', :ovirt__gateway => '192.168.2.1' # oVirt specific information, overwrites previous on oVirt provider
+
+  config.vm.provider :ovirt4 do |ovirt|
+    ovirt.url = 'https://nuc/ovirt-engine/api'
+    ovirt.username = "admin@internal"
+    ovirt.password = "macdaddy"
+    ovirt.insecure = true
+    ovirt.debug = true
+    ovirt.cluster = 'EL7'
+    ovirt.template = 'CentOS7'
+    ovirt.console = 'spice'
+
+	ovirt.memory_size = '4 GiB'
+    ovirt.memory_guaranteed = '512 MB'
+    ovirt.cpu_cores = 4
+    ovirt.cpu_sockets = 1
+  end
+end
+
