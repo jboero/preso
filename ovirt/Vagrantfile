@@ -9,8 +9,11 @@ config.vm.box = "centos/atomic-host"
 
   config.vm.provider :ovirt4 do |ovirt|
     ovirt.url = 'https://nuc/ovirt-engine/api'
+	  
+    #TODO encrypt creds with Vault
     ovirt.username = "admin@internal"
     ovirt.password = "macdaddy"
+	  
     ovirt.insecure = true
     ovirt.debug = true
     ovirt.cluster = 'EL7'
