@@ -100,7 +100,7 @@ function fedInit()
 	fedRenderer = new THREE.WebGLRenderer( {alpha:true} );
 	fedRenderer.setPixelRatio( window.devicePixelRatio );
 	fedRenderer.setSize( window.innerWidth, window.innerHeight );
-	fedRenderer.setClearColor( 0x000000 );
+	fedRenderer.setClearColor( 0x101010 );
 	fedContainer.appendChild( fedRenderer.domElement );
 
 	window.addEventListener( 'resize', fedOnWindowResize, false );
