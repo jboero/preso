@@ -1,5 +1,9 @@
 Quickstart - To try this out (with a home dir for example), clone it into ~/public_html/ and make sure ownership matches your web server.  Then browse to index.html.
 
+Even easier with docker:
+$ docker run -p 80:80 boeroboy/hashibo
+Then browse to http://localhost.  Change port 80 if you must.
+
 YouTube Video: https://www.youtube.com/watch?v=osclf2fpjsU
 
 # reveal.js
