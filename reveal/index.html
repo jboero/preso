@@ -79,14 +79,14 @@ function fedInit()
 	fedScene.add( dae );
 
 	particleLight = new THREE.Mesh( new THREE.SphereGeometry( 4, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0x333333 } ) );
-	particleLight.intensity = 10;
+	particleLight.intensity = 2;
 	fedScene.add( particleLight );
 
-	//fedScene.add( new THREE.AmbientLight( 0x040404 ) );
+	fedScene.add( new THREE.AmbientLight( 0x040404 ) );
 
 	var directionalLight = new THREE.DirectionalLight( 0x888888 );
 	//var directionalLight = new THREE.HemisphereLight();
-	directionalLight.intensity = 4;
+	directionalLight.intensity = 2;
 	directionalLight.position.x = -1;
 	directionalLight.position.y = 1;
 	directionalLight.position.z = -1;
@@ -94,7 +94,7 @@ function fedInit()
 	fedScene.add( directionalLight );
 	
 	var pointLight = new THREE.PointLight( 0x444444, 4 );
-	pointLight.intensity=10;
+	pointLight.intensity=2;
 	particleLight.add( pointLight );
 
 	fedRenderer = new THREE.WebGLRenderer( {alpha:true} );
@@ -150,34 +150,41 @@ function fedRender()
       
 	<section>
         <section>
-          <h1>Hashicorp</h1>
-          <h2>Cloud Infrastructure Automation</h2>
-		  <img src="images/hashicorplogo.png">
-		  <h4><a href="mailto:john.boero@hashicorp.com">JohnnyB@hashicorp.com</a></h4>
+	  <center>
+          <img src="images/hashicorplogo.png">
+          <h2>Hashiconf 2018</h2>
+	  <h3>Announcements recap at Microsoft Reactor London</h3>
+	  <h5>Slides available on Docker Hub: boeroboy/hashiconf:2018</h5>
+<!--	  <h4><a href="mailto:jboero@hashicorp.com">jboero@hashicorp.com</a></h4> -->
         </section>
-		<section data-markdown class="center">
-			<img src="images/stack1.png">
+<!--
+	<section data-markdown class="center">
+		<img src="images/stack1.png">
         </section>
-		<section>
+-->
+	<section>
         <h1>Suite:</h1>
 		<ul><h3>
-			<li><b>Consul</b> service discovery, cluster management.</li>
+			<li><b>Consul</b> mesh service discovery and connectivity.</li>
 			<li><b>Nomad</b> cluster and container scheduling.</li>
-			<li><b>Vault</b> secure secret encryption.</li>
-			<li><b>Terraform</b> runtime configuration.</li>
-			<li><b>Vagrant</b> easy and flexible VM orchestration.</li>
-			<li><b>Packer</b> consistent and easy machine images building.</li>
+			<li><b>Vault</b> secure secret management.</li>
+			<li><b>Terraform</b> infrastructure configuration.</li>
+			<li><b>Vagrant</b> easy dev VM orchestration.</li>
+			<li><b>Packer</b> consistent simple image building.</li>
 		</ul></h3>
         </section>
+	<section style="top:-20%">
+		<iframe src="https://www.youtube.com/embed/iVcfwnfO4rk"
+			width="1080" height="600"></iframe>
 	</section>
-
+	</section>
 	<section>
 		<section><img src="images/consul.png"></section>
-        <section><img src="images/consul1.png"></section>
-        <section><img src="images/consul2.png"></section>
-        <section>
-			<h2>Consul DNS Query Interface</h2>
-			Look up services using Consul's built-in DNS server. <br>Support existing infrastructure without any code change.
+        <section style="top:-20%"><img src="images/consul1.png"></section>
+        <section style="top:-20%"><img src="images/consul2.png"></section>
+	<section style="top:-10%">
+		<h2>Consul DNS Query Interface</h2>
+		Look up services using Consul's built-in DNS server. <br>Support existing infrastructure without any code change.
             <pre class="float" style="width:100%"><code>
 admin@hashicorp.com: dig web-frontend.service.consul. ANY
 ; <<>> DiG 9.8.3-P1 <<>> web-frontend.service.consul. ANY
@@ -194,9 +201,25 @@ web-frontend.service.consul. 0 IN A 10.0.3.83
 web-frontend.service.consul. 0 IN A 10.0.1.10
 </code></pre>
 		</section>
+        <section>
+		<h1>New in Consul version 1.4</h1><h3><ul>
+		<li>General Availability of ‘Consul Connect’
+		<li>Native Kubernetes integration
+		<li>Bridging of k8s and non-k8s workloads
+		<li>Multi-data center support for service segmentation (Enterprise Version)
+		<li>Great new learning portal: <a href='https://learn.hashicorp.com/consul/'>https://learn.hashicorp.com/consul/</a>
+		</ul></h3>
 	</section>
-	
-	<section>
+	<section style="top:-50%">
+		<img src="images/learnconsul.webp">
+	</section>
+	<section style="top:-20%">
+		<iframe src="https://www.youtube.com/embed/8T8t4-hQY74"
+			width="1080" height="600"></iframe>
+	</section>
+</section>
+
+<section>
 		<section><img src="images/nomadlogo.png"></section>
 		<section>
 			<h2>What is Nomad?</h2>
@@ -208,18 +231,22 @@ Nomad is a tool for managing a cluster of machines and running applications on t
 			<li><b>Operationally Simple:</b> Nomad ships as a single binary, both for clients and servers, and requires no external services for coordination or storage.
 			<li><b>Multi-Datacenter and Multi-Region Aware:</b> Nomad models infrastructure as groups of datacenters which form a larger region. Scheduling operates at the region level allowing for cross-datacenter scheduling. Multiple regions federate together allowing jobs to be registered globally.
 			</ul>
-		</section>
-		<section>
-			<ul><li><b>Flexible Workloads:</b> Nomad has extensible support for task drivers, allowing it to run containerized, virtualized, and standalone applications. Users can easily start Docker containers, VMs, or application runtimes like Java. Nomad supports Linux, Windows, BSD and OSX, providing the flexibility to run any workload.
-			<li><b>Built for Scale:</b> Nomad was designed from the ground up to support global scale infrastructure. Nomad is distributed and highly available, using both leader election and state replication to provide availability in the face of failures. Nomad is optimistically concurrent, enabling all servers to participate in scheduling decisions which increases the total throughput and reduces latency to support demanding workloads.
-			</ul>
-		</section>
+	</section>
+        <section>
+                <h1>New in Nomad version 0.9</h1><h3><ul>
+		<li>New scheduling capabilities
+		<li>Groundwork for plugins
+		<li>Web UI enhanced with job submission and editing
+		<li>Improved resource statistic visualizations.
+		<li>Learning portal coming soon*
+                </ul></h3>
+        </section>
 	</section>
 	
 	<section>
 		<section><img src="images/vault.png"></section>
 		<section>
-			<img src="images/vault1.png">
+			<img src="images/vault1.png"><br>
 			<b>Vault</b> secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. Vault handles leasing, key revocation, key rolling, and auditing.
 		</section>
 		<section>
@@ -232,11 +259,27 @@ Nomad is a tool for managing a cluster of machines and running applications on t
 			Vault stores a detailed audit log of all authenticated client interaction: authentication, token creation, secret access, secret revocation, and more. Audit logs can be sent to multiple backends to ensure redundant copies. Paired with Vault's strict leasing policies, operators can easily trace the lifetime and origin of any secret.
 			</ul>
 		</section>
+	<section>
+                <h1>New in Vault version 1.0</h1><h3><ul>
+		<li>Enterprise stability
+		<li>Further ecosystem integration
+		<li>Scale
+		<li>Auto-unseal available in open source
+		<li>Great new learning portal: <a href='https://learn.hashicorp.com/consul/'>https://learn.hashicorp.com/vault/</a>
+                </ul></h3>
+        </section>
+	<section style="top:-50%">
+		<img src="images/learnvault.webp">
+	</section>
+	<section style="top:-20%">
+		<iframe src="https://www.youtube.com/embed/VYfl-DpZ5wM"
+			width="1080" height="600"></iframe>
+	</section>
 	</section>
 	
 	<section>
 		<section><img src="images/terraform.png"></section>
-		<section>
+		<section style="top:-10%">
             <h2>Simple and Powerful</h2>
 Terraform enables you to safely and predictably create, change, and improve infrastructure. It is an open source tool that codifies APIs into declarative configuration files that can be shared amongst team members, treated as code, edited, reviewed, and versioned.
 			<img src="images/terraform1.png">
@@ -248,49 +291,69 @@ Terraform enables you to safely and predictably create, change, and improve infr
         <li><b>AUTOMATION FRIENDLY</b><br> If it can be codified, it can be automated.
         </ul>
 		</section>
-        <section>
-            <h2>COMPOSING RESOURCES</h2> Use attributes from other resources to create an infrastructure composed of resources across multiple providers.
+        <section style="top:-20%">
+            <h2>COMPOSING RESOURCES</h2> Use aggregated resources with team workflow.
 <pre class="float" style="width:100%"><code>
-resource "digitalocean_droplet" "web" {
-  name   = "tf-web"
-  size   = "512mb"
-  image  = "centos-5-8-x32"
-  region = "sfo1"
-}
- 
-resource "dnsimple_record" "hello" {
-  domain = "example.com"
-  name   = "test"
-  value  = "${digitalocean_droplet.web.ipv4_address}"
-  type   = "A"
-}
-</code></pre>
-        </section>
-        <section>
-            <h2>FAST, SIMPLIFIED INTERACTION</h2> Simple and intuitive configuration makes even the most complicated services approachable: no more web consoles, loading bars, or confusing CLI clients.
-<pre class="float" style="width:100%"><code>
-resource "aws_elb" "frontend" {
-  name = "frontend-load-balancer"
-  listener {
-    instance_port     = 8000
-    instance_protocol = "http"
-    lb_port           = 80
-    lb_protocol       = "http"
+# Create a virtual network within the resource group
+resource "azurerm_virtual_network" "network" {
+  name                = "production-network"
+  address_space       = ["10.0.0.0/16"]
+  location            = "${azurerm_resource_group.network.location}"
+  resource_group_name = "${azurerm_resource_group.network.name}"
+
+  subnet {
+    name           = "subnet1"
+    address_prefix = "10.0.1.0/24"
   }
- 
-  instances = ["${aws_instance.app.*.id}"]
-}
- 
-resource "aws_instance" "app" {
-  count = 5
- 
-  ami           = "ami-408c7f28"
-  instance_type = "t1.micro"
+
+  subnet {
+    name           = "subnet2"
+    address_prefix = "10.0.2.0/24"
+  }
 }
 </code></pre>
         </section>
+        <section style="top:-10%">
+            <h2>FAST, SIMPLIFIED INTERACTION</h2> Simple and intuitive configuration makes even the most complicated services scale easily.<br>Emit outputs and share TF states with other workspaces and teams.
+<pre class="float" style="width:100%"><code>
+data "azurerm_builtin_role_definition" "contributor" {
+  name = "Contributor"
+}
+
+output "contributor_role_definition_id" {
+  value = "${data.azurerm_builtin_role_definition.contributor.id}"
+}
+
+data "azurerm_kubernetes_cluster" "test" {
+  name                = "myakscluster"
+  resource_group_name = "${myteam_data.resource_group}"
+}
+</code></pre>
+        </section>
+        <section>
+                <h1>New in Terraform version 0.12</h1><h3><ul>
+                <li>Improved configuration HCL
+                <li>Remote Terraform for Enterprise users
+                <li>Free Enterprise tier for individual usage.
+                <li>Learning portal coming soon*
+                </ul></h3>
+        </section>
+        <section style="top:-20%">
+                <h1>New in HCL</h1><h3><ul>
+                <li>First-class expressions: ami = var.ami[1]
+		<li>For expressions
+		<li>Dynamic blocks.  Child block generation/iteration.
+		<li>Conditional constructs with lazy type: <condition>?then:else
+		<li>Rich types in inputs/outputs.
+		<li>Template syntax: %{instance.id}
+		<li>Reliable JSON
+                </ul></h3>
+        </section>
+	<section style="top:-20%">
+		<iframe src="https://www.youtube.com/embed/h970ZBgKINg"
+			width="1080" height="600"></iframe>
 	</section>
-	
+	</section>
     <section>
 		<section><img src="images/vagrant.png"></section>
 		<section>
@@ -298,8 +361,8 @@ resource "aws_instance" "app" {
             <p>To achieve its magic, Vagrant stands on the shoulders of giants. Machines are provisioned on top of VirtualBox, VMware, AWS, or any other provider. Then, industry-standard provisioning tools such as shell scripts, Chef, or Puppet, can automatically install and configure software on the virtual machine.</p>
             <code> $ vagrant init centos/atomic-host</code>
 		</section>
-		<section><img src="images/vagrant1.png"></section>
-        <section>
+		<section style="top:-35%"><img src="images/vagrant1.png"></section>
+        <section style="top:-15%">
             <h2>Instant Environments</h2>
             <pre class="small float" style="center; width:120%"><code>
 $  vagrant init centos/atomic-host
@@ -319,7 +382,7 @@ Bringing machine 'default' up with 'virtualbox' provider...
     default: Progress: 31% (Rate: 3492k/s, Estimated time remaining: 0:02:06)
     </code></pre>
         </section>
-		<section>
+		<section style="top:-20%">
             <h2>Simple and Powerful</h2>
 Vagrant provides the same, easy workflow regardless of your role as a developer, operator, or designer. It leverages a declarative configuration file which describes all your software requirements, packages, operating system configuration, users, and more.
 <pre class="small float" style="width:100%"><code>
@@ -343,7 +406,8 @@ vagrant@precise64:~$ _
             <h2>Modern, Automated</h2>
 Packer is easy to use and automates the creation of any type of machine image. It embraces modern configuration management by encouraging you to use automated scripts to install and configure the software within your Packer-made images. Packer brings machine images into the modern age, unlocking untapped potential and opening new opportunities.
         </section>
-        <section>
+        <section style="top:-15%">
+	Builders for multiple image standards.
             <pre class="small float" style="center; width:120%"><code>
 $ packer build template.json
 ==> virtualbox: virtualbox output will be in this color.
@@ -546,8 +610,8 @@ $ packer build template.json
           // Full list of configuration options available here:
           // https://github.com/hakimel/reveal.js#configuration
           Reveal.initialize({
-			width: "100%",
-			height: "100%",
+//			width: "100%",
+//			height: "100%",
 			margin: 0,
 			minScale: 0.5,
 			maxScale: 2,
