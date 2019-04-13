@@ -137,7 +137,6 @@ function fedRender()
 {
 	fedRenderer.render( fedScene, fedCam );
 }
-
 </script>
 
     <div class="reveal">
@@ -147,313 +146,41 @@ function fedRender()
 
       <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
-      
-	<section>
-        <section>
-	  <center>
-          <img src="images/hashicorplogo.png">
-          <h2>Hashiconf 2018</h2>
-	  <h3>Announcements recap at Microsoft Reactor London</h3>
-	  <h5>Slides available on Docker Hub: boeroboy/hashiconf:2018</h5>
-<!--	  <h4><a href="mailto:jboero@hashicorp.com">jboero@hashicorp.com</a></h4> -->
-        </section>
-<!--
-	<section data-markdown class="center">
-		<img src="images/stack1.png">
-        </section>
--->
-	<section>
-        <h1>Suite:</h1>
-		<ul><h3>
-			<li><b>Consul</b> mesh service discovery and connectivity.</li>
-			<li><b>Nomad</b> cluster and container scheduling.</li>
-			<li><b>Vault</b> secure secret management.</li>
-			<li><b>Terraform</b> infrastructure configuration.</li>
-			<li><b>Vagrant</b> easy dev VM orchestration.</li>
-			<li><b>Packer</b> consistent simple image building.</li>
-		</ul></h3>
-        </section>
-	<section style="top:-20%">
-		<iframe src="https://www.youtube.com/embed/iVcfwnfO4rk"
+
+<script>
+document.getElementById("jsStyle").innerHTML = `
+<style>
+img, video, iframe {
+    height: ${window.innerHeight * 0.8}px !important;
+    width: ${window.innerWidth * 0.8}px !important;
+}
+</style>`;
+</script>
+  <section>
+      <section style="top:-65%"><img src="images/hashicorp-1.webp"></section>
+      <section style="top:-65%"><img class="stretch" src="images/hashistack.webp"></section>
+      <section style="top:-65%"><img class="stretch" src="images/terraform.webp"></section>
+      <section style="top:-65%"><img class="stretch" src="images/consul-1.webp"></section>
+      <section style="top:-65%"><img class="stretch" src="images/vault.webp"></section>
+  </section>
+  <section>
+	  <section style="top:-20%">
+		<iframe src="https://www.youtube.com/embed/o9x9agDCoNc" width="1080" height="720"></iframe>
+	  </section>
+	  <section style="top:-20%">
+		<iframe src="https://www.youtube.com/embed/Imh6Qucx0Vo" width="1080" height="720"></iframe>
+	  </section>
+	  <section style="top:-20%">
+		<iframe src="https://www.youtube.com/embed/8T8t4-hQY74" width="1080" height="720"></iframe>
+	  </section>
+	  <section style="top:-20%">
+		<iframe src="https://www.youtube.com/embed/PqTYGQ7jJqU" width="1080" height="720"></iframe>
+	  </section>
+	  <section style="top:-20%">
+		<iframe src="https://www.youtube.com/embed/Y42hgiSvXfE" autoslide-data
 			width="1080" height="600"></iframe>
-	</section>
-	</section>
-	<section>
-		<section><img src="images/consul.png"></section>
-        <section style="top:-20%"><img src="images/consul1.png"></section>
-        <section style="top:-20%"><img src="images/consul2.png"></section>
-	<section style="top:-10%">
-		<h2>Consul DNS Query Interface</h2>
-		Look up services using Consul's built-in DNS server. <br>Support existing infrastructure without any code change.
-            <pre class="float" style="width:100%"><code>
-admin@hashicorp.com: dig web-frontend.service.consul. ANY
-; <<>> DiG 9.8.3-P1 <<>> web-frontend.service.consul. ANY
-;; global options: +cmd
- 
-;; Got answer:
-;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 29981
-;; flags: qr aa rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 0
-;; QUESTION SECTION:
-;web-frontend.service.consul. IN ANY
- 
-;; ANSWER SECTION:
-web-frontend.service.consul. 0 IN A 10.0.3.83
-web-frontend.service.consul. 0 IN A 10.0.1.10
-</code></pre>
-		</section>
-        <section>
-		<h1>New in Consul version 1.4</h1><h3><ul>
-		<li>General Availability of ‘Consul Connect’
-		<li>Native Kubernetes integration
-		<li>Bridging of k8s and non-k8s workloads
-		<li>Multi-data center support for service segmentation (Enterprise Version)
-		<li>Great new learning portal: <a href='https://learn.hashicorp.com/consul/'>https://learn.hashicorp.com/consul/</a>
-		</ul></h3>
-	</section>
-	<section style="top:-50%">
-		<img src="images/learnconsul.webp">
-	</section>
-	<section style="top:-20%">
-		<iframe src="https://www.youtube.com/embed/8T8t4-hQY74"
-			width="1080" height="600"></iframe>
-	</section>
-</section>
-
-<section>
-		<section><img src="images/nomadlogo.png"></section>
-		<section>
-			<h2>What is Nomad?</h2>
-Nomad is a tool for managing a cluster of machines and running applications on them. Nomad abstracts away machines and the location of applications, and instead enables users to declare what they want to run.  Nomad handles where they should run and how to run them.
-			<img src="images/nomad-diagram.png">
-		</section>
-		<section>
-			<ul><li><b>Docker Support:</b> Nomad supports Docker as a first-class workload type. Jobs submitted to Nomad can use the docker driver to easily deploy containerized applications to a cluster. Nomad enforces the user-specified constraints, ensuring the application only runs in the correct region, datacenter, and host environment.
-			<li><b>Operationally Simple:</b> Nomad ships as a single binary, both for clients and servers, and requires no external services for coordination or storage.
-			<li><b>Multi-Datacenter and Multi-Region Aware:</b> Nomad models infrastructure as groups of datacenters which form a larger region. Scheduling operates at the region level allowing for cross-datacenter scheduling. Multiple regions federate together allowing jobs to be registered globally.
-			</ul>
-	</section>
-        <section>
-                <h1>New in Nomad version 0.9</h1><h3><ul>
-		<li>New scheduling capabilities
-		<li>Groundwork for plugins
-		<li>Web UI enhanced with job submission and editing
-		<li>Improved resource statistic visualizations.
-		<li>Learning portal coming soon*
-                </ul></h3>
-        </section>
-	</section>
-	
-	<section>
-		<section><img src="images/vault.png"></section>
-		<section>
-			<img src="images/vault1.png"><br>
-			<b>Vault</b> secures, stores, and tightly controls access to tokens, passwords, certificates, API keys, and other secrets in modern computing. Vault handles leasing, key revocation, key rolling, and auditing.
-		</section>
-		<section>
-			<ul><li><b>Secret Storage</b> Vault can store your existing secrets, or it can dynamically generate new secrets to control access to third-party resources or provide time-limited credentials for your infrastructure. All data that Vault stores is encrypted. Any dynamically-generated secrets are associated with leases, and Vault will automatically revoke these secrets after the lease period ends. Access control policies provide strict control over who can access what secrets.
-			<li><b>Key Rolling</b> Secrets you store within Vault can be updated at any time. If using Vault's encryption-as-a-service functionality, the keys used can be rolled to a new key version at any time, while retaining the ability to decrypt values encrypted with past key versions. For dynamically-generated secrets, configurable maximum lease lifetimes ensure that key rolling is easy to enforce.
-			</ul>
-		</section>
-		<section>
-			<ul><li><b>Audit Logs</b>
-			Vault stores a detailed audit log of all authenticated client interaction: authentication, token creation, secret access, secret revocation, and more. Audit logs can be sent to multiple backends to ensure redundant copies. Paired with Vault's strict leasing policies, operators can easily trace the lifetime and origin of any secret.
-			</ul>
-		</section>
-	<section>
-                <h1>New in Vault version 1.0</h1><h3><ul>
-		<li>Enterprise stability
-		<li>Further ecosystem integration
-		<li>Scale
-		<li>Auto-unseal available in open source
-		<li>Great new learning portal: <a href='https://learn.hashicorp.com/consul/'>https://learn.hashicorp.com/vault/</a>
-                </ul></h3>
-        </section>
-	<section style="top:-50%">
-		<img src="images/learnvault.webp">
-	</section>
-	<section style="top:-20%">
-		<iframe src="https://www.youtube.com/embed/VYfl-DpZ5wM"
-			width="1080" height="600"></iframe>
-	</section>
-	</section>
-	
-	<section>
-		<section><img src="images/terraform.png"></section>
-		<section style="top:-10%">
-            <h2>Simple and Powerful</h2>
-Terraform enables you to safely and predictably create, change, and improve infrastructure. It is an open source tool that codifies APIs into declarative configuration files that can be shared amongst team members, treated as code, edited, reviewed, and versioned.
-			<img src="images/terraform1.png">
-		</section>
-		<section>
-		<ul><li><b>INFRASTRUCTURE AS CODE</b><br> Define infrastructure as code to increase operator productivity and transparency.
-        <li><b>COLLABORATE & SHARE</b><br> Terraform configuration can be stored in version control, shared, and collaborated on by teams of operators.
-        <li><b>EVOLVE YOUR INFRASTRUCTURE</b><br> Track the complete history of infrastructure versions.
-        <li><b>AUTOMATION FRIENDLY</b><br> If it can be codified, it can be automated.
-        </ul>
-		</section>
-        <section style="top:-20%">
-            <h2>COMPOSING RESOURCES</h2> Use aggregated resources with team workflow.
-<pre class="float" style="width:100%"><code>
-# Create a virtual network within the resource group
-resource "azurerm_virtual_network" "network" {
-  name                = "production-network"
-  address_space       = ["10.0.0.0/16"]
-  location            = "${azurerm_resource_group.network.location}"
-  resource_group_name = "${azurerm_resource_group.network.name}"
-
-  subnet {
-    name           = "subnet1"
-    address_prefix = "10.0.1.0/24"
-  }
-
-  subnet {
-    name           = "subnet2"
-    address_prefix = "10.0.2.0/24"
-  }
-}
-</code></pre>
-        </section>
-        <section style="top:-10%">
-            <h2>FAST, SIMPLIFIED INTERACTION</h2> Simple and intuitive configuration makes even the most complicated services scale easily.<br>Emit outputs and share TF states with other workspaces and teams.
-<pre class="float" style="width:100%"><code>
-data "azurerm_builtin_role_definition" "contributor" {
-  name = "Contributor"
-}
-
-output "contributor_role_definition_id" {
-  value = "${data.azurerm_builtin_role_definition.contributor.id}"
-}
-
-data "azurerm_kubernetes_cluster" "test" {
-  name                = "myakscluster"
-  resource_group_name = "${myteam_data.resource_group}"
-}
-</code></pre>
-        </section>
-        <section>
-                <h1>New in Terraform version 0.12</h1><h3><ul>
-                <li>Improved configuration HCL
-                <li>Remote Terraform for Enterprise users
-                <li>Free Enterprise tier for individual usage.
-                <li>Learning portal coming soon*
-                </ul></h3>
-        </section>
-        <section style="top:-20%">
-                <h1>New in HCL</h1><h3><ul>
-                <li>First-class expressions: ami = var.ami[1]
-		<li>For expressions
-		<li>Dynamic blocks.  Child block generation/iteration.
-		<li>Conditional constructs with lazy type: <condition>?then:else
-		<li>Rich types in inputs/outputs.
-		<li>Template syntax: %{instance.id}
-		<li>Reliable JSON
-                </ul></h3>
-        </section>
-	<section style="top:-20%">
-		<iframe src="https://www.youtube.com/embed/h970ZBgKINg"
-			width="1080" height="600"></iframe>
-	</section>
-	</section>
-    <section>
-		<section><img src="images/vagrant.png"></section>
-		<section>
-            <h2>Why Vagrant?</h2>
-            <p>To achieve its magic, Vagrant stands on the shoulders of giants. Machines are provisioned on top of VirtualBox, VMware, AWS, or any other provider. Then, industry-standard provisioning tools such as shell scripts, Chef, or Puppet, can automatically install and configure software on the virtual machine.</p>
-            <code> $ vagrant init centos/atomic-host</code>
-		</section>
-		<section style="top:-35%"><img src="images/vagrant1.png"></section>
-        <section style="top:-15%">
-            <h2>Instant Environments</h2>
-            <pre class="small float" style="center; width:120%"><code>
-$  vagrant init centos/atomic-host
-A `Vagrantfile` has been placed in this directory. You are now
-ready to `vagrant up` your first virtual environment! Please read
-the comments in the Vagrantfile as well as documentation on
-`vagrantup.com` for more information on using Vagrant.
-$  vagrant up
-Bringing machine 'default' up with 'virtualbox' provider...
-==> default: Box 'centos/atomic-host' could not be found. Attempting to find and install...
-    default: Box Provider: virtualbox
-    default: Box Version: >= 0
-==> default: Loading metadata for box 'centos/atomic-host'
-    default: URL: https://vagrantcloud.com/centos/atomic-host
-==> default: Adding box 'centos/atomic-host' (v1710.01) for provider: virtualbox
-    default: Downloading: https://vagrantcloud.com/centos/boxes/atomic-host/versions/1710.01/providers/virtualbox.box
-    default: Progress: 31% (Rate: 3492k/s, Estimated time remaining: 0:02:06)
-    </code></pre>
-        </section>
-		<section style="top:-20%">
-            <h2>Simple and Powerful</h2>
-Vagrant provides the same, easy workflow regardless of your role as a developer, operator, or designer. It leverages a declarative configuration file which describes all your software requirements, packages, operating system configuration, users, and more.
-<pre class="small float" style="width:100%"><code>
-$ vagrant init hashicorp/precise645
- 
-$ vagrant up
-Bringing machine 'default' up with 'virtualbox' provider...
-==> default: Importing base box 'hashicorp/precise64'...
-==> default: Forwarding ports...
-default: 22 (guest) => 2222 (host) (adapter 1)
-==> default: Waiting for machine to boot...
- 
-$ vagrant ssh
-vagrant@precise64:~$ _
-</code></pre>
-		</section>
-    </section>
-    <section>
-        <section><img src="images/packer.png"></section>
-        <section>
-            <h2>Modern, Automated</h2>
-Packer is easy to use and automates the creation of any type of machine image. It embraces modern configuration management by encouraging you to use automated scripts to install and configure the software within your Packer-made images. Packer brings machine images into the modern age, unlocking untapped potential and opening new opportunities.
-        </section>
-        <section style="top:-15%">
-	Builders for multiple image standards.
-            <pre class="small float" style="center; width:120%"><code>
-$ packer build template.json
-==> virtualbox: virtualbox output will be in this color.
-==> vmware: vmware output will be in this color.
-==> vmware: Copying or downloading ISO. Progress will be reported periodically.
-==> vmware: Creating virtual machine disk
-==> vmware: Building and writing VMX file
-==> vmware: Starting HTTP server on port 8964
-==> vmware: Starting virtual machine...
-==> virtualbox: Downloading VirtualBox guest additions. Progress will be shown periodically.
-==> virtualbox: Copying or downloading ISO. Progress will be reported periodically.
-==> virtualbox: Starting HTTP server on port 8081
-==> virtualbox: Creating virtual machine...
-==> virtualbox: Creating hard drive...
-==> virtualbox: Creating forwarded port mapping for SSH (host port 3213)
-==> virtualbox: Executing custom VBoxManage commands...
-    virtualbox: Executing: modifyvm packer --memory 480
-    virtualbox: Executing: modifyvm packer --cpus 1
-==> virtualbox: Starting the virtual machine...
-==> vmware: Waiting 10s for boot...
-==> virtualbox: Waiting 10s for boot...
-            </code></pre>
-        </section>
-        <section>
-            What about Docker container images?
-            <pre class="small float" style="center; width:120%"><code>
-{
-  "type": "docker",
-  "image": "ubuntu",
-  "commit": true,
-  "changes": [
-    "USER www-data",
-    "WORKDIR /var/www",
-    "ENV HOSTNAME www.example.com",
-    "VOLUME /test1 /test2",
-    "EXPOSE 80 443",
-    "LABEL version=1.0",
-    "ONBUILD RUN date",
-    "CMD [\"nginx\", \"-g\", \"daemon off;\"]",
-    "ENTRYPOINT /var/www/start.sh"
-  ]
-}
-            </code></pre>
-        </section>
-    </section>
-	
+	  </section>
+  </section>
 	<!-- end of deck -->
 	
       </div>
@@ -610,19 +337,19 @@ $ packer build template.json
           // Full list of configuration options available here:
           // https://github.com/hakimel/reveal.js#configuration
           Reveal.initialize({
-//			width: "100%",
-//			height: "100%",
 			margin: 0,
-			minScale: 0.5,
-			maxScale: 2,
-
+//			minScale: 0.5,
+//			maxScale: 2,
+//			autoPlayMedia: null,
             controls: true,
             progress: true,
             history: true,
 
-				// Adjust or comment this line for no auto-advance mode:
-				//autoSlide: 10000,
-				loop: true,
+			// Adjust or comment this line for no auto-advance mode:
+			//autoSlide: 10000,
+			//autoSlideStoppable: true,
+			defaultTiming: 120,
+			loop: true,
 
             transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/linear(2d)
 
