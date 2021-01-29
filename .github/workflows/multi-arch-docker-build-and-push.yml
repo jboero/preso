@@ -23,7 +23,7 @@ jobs:
         id: branchvar
         run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
       - name: Check Branch output
-        run: echo ${{ steps.vars.outputs.short_ref }}
+        run: echo ${{ steps.branchvar.outputs.short_ref }}
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
@@ -32,4 +32,4 @@ jobs:
           platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/hashibo:${{ steps.vars.outputs.short_ref }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/hashibo:${{ steps.branchvar.outputs.short_ref }}
