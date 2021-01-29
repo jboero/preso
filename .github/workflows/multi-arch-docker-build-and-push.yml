@@ -10,9 +10,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Get Branch Name
-        uses: nelonoel/branch-name@v1.0.1
-      - run: echo ${BRANCH_NAME}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -22,6 +19,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set Branch output
+        id: branchvar
+        run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+      - name: Check Branch output
+        run: echo ${{ steps.vars.outputs.short_ref }}
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
@@ -30,4 +32,4 @@ jobs:
           platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/hashibo:${BRANCH_NAME}
+            ${{ secrets.DOCKERHUB_USERNAME }}/hashibo:${{ steps.vars.outputs.short_ref }}
