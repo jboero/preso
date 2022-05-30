@@ -137,13 +137,53 @@ function fedRender()
 {
 	fedRenderer.render( fedScene, fedCam );
 }
-
 </script>
     <div class="reveal">
       <!-- Used to fade in a background when a specific slide state is reached -->
       <div class="state-background"></div>
       <!-- Any section element inside of this container is displayed as a slide -->
-      <div class="slides">
+      <div class="slides" id="slides">
+
+      <script>
+      // Now load all directories (sections) and subsections (SVG images)
+      var http = new XMLHttpRequest();
+      var sections=0;
+      var slides = document.getElementById('slides');
+
+      // How many sections (columns) do we have?
+      // Maximum 50 slides per column.
+      for (i = 1; i < 50; ++i){
+        http.open('HEAD', "sections/"+i, false);
+        http.send();
+        if (http.status == 200)
+          sections++;
+        else
+          break;
+      }
+
+      // How many subsections (slides) for each section?
+      for (i = 1; i <= sections; i++) {
+        section = document.createElement("section");
+        for (j = 1; j < 10; j++) {
+          var url = "sections/"+i+"/"+j+".svg";
+          http.open('GET', url, false);
+          http.send();
+          if (http.status === 200) {
+            subsection = document.createElement("section");
+            img = document.createElement("img");
+            img.src = "sections/"+i+"/"+j+".svg";
+
+            subsection.appendChild(img);
+            section.appendChild(subsection);
+          }
+          else
+            break;
+        }
+        slides.appendChild(section);
+      }
+      </script>
+      
+<!-- Sample static deck
 	<section>
     <section style="top:-48%"><img src="images/intro.svg"></section>
 		<section style="top:-48%"><img src="images/toc.svg"></section>
@@ -159,7 +199,7 @@ function fedRender()
     <section style="top:-48%"><img src="images/openapi.svg"></section>
     <section style="top:-48%"><img src="images/conclusion.svg"></section>
 	</section>
-	
+-->
 	<!-- end of deck -->
 	
       </div>
