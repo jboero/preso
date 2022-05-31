@@ -12,6 +12,11 @@ sections
     ├── 1.svg
     └── 2.svg
 ```
+To replace the background 3D model with a DAE of your own (Blender), replace the model file `reveal/models/hashicorp/hashicorp.dae`.
+
+Sample:
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/B56IL7125xM/0.jpg)](https://www.youtube.com/watch?v=B56IL7125xM)
 
 John Boero
 boeroboy@gmail.com
