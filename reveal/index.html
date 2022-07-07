@@ -172,7 +172,8 @@ function fedRender()
             subsection = document.createElement("section");
             img = document.createElement("img");
             img.src = "sections/"+i+"/"+j+".svg";
-
+            img.style.width="100vw"
+            img.style.height="auto"
             subsection.appendChild(img);
             section.appendChild(subsection);
           }
@@ -183,11 +184,11 @@ function fedRender()
       }
       </script>
       
-<!-- Sample static deck
+<!-- Sample static deck --
 	<section>
-    <section style="top:-48%"><img src="images/intro.svg"></section>
-		<section style="top:-48%"><img src="images/toc.svg"></section>
-    <section style="top:-48%"><img src="images/linuxflowchart.svg"></section>
+    <section><img src="images/tfefs.webp"></section>
+		<section><img src="images/arrow_white.gif"></section>
+    <section><img src="images/linuxflowchart.svg"></section>
   </section>
   <section>
 		<section style="top:-48%"><img src="images/requirements.svg"></section>

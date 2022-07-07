@@ -112,8 +112,6 @@ body {
 	/* preserve aspect ratio and scale image so it's bound within the section */
 	max-width: 95vw;
 	max-height: 95vh;
-	width: 100vw;
-	height: auto;
 } 
 
 .reveal strong, 
