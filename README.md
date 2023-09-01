@@ -1,5 +1,5 @@
-# Hashibo - SVG Edition
-Template Reveal.js for HashiCorp talks.  This version uses client-side JS to detect what slide structure you've dropped into the directory `./sections/`. So all you need to do is add numbered directories and numbered SVG drawings to each directory.  No need to write or change any code here.  Use these samples for templates if needed in the application of your choice.  I use Inkscape.
+# Presentation Template - SVG Edition
+Template Reveal.js for my presentations. Repo formerly called "hashibo". Based on fairly old version of Reveal.JS-Three.JS (could use updating but delicate). This version uses client-side JS to detect what slide structure you've dropped into the directory `./sections/`. So all you need to do is add numbered directories and numbered SVG drawings to each directory.  No need to write or change any code here.  Use these samples for templates if needed in the application of your choice.  I use Inkscape.
 
 ```
 $  tree sections
