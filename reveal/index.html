@@ -41,27 +41,34 @@
 
 	 <div id="background"/>
 <script>
-// RedHat background script
-// Added 6/Sep/2015 by John Boero - johnnyb@redhat.com
+
 var fedContainer;
 
 var fedCam, fedScene, fedRenderer;
-var target = new THREE.Vector3(-3, 3, 3);
-var particleLight, dae;
+var particleLight, riscvLogo, riscvText;
 var loader = new THREE.ColladaLoader();
 
-loader.options.convertUpAxis = true;
-
-// Use blue fedora model if Fedora
 // Note that I've not had good luck with json models. Use collada (dae).
 // You can import/edit/export from Blender.
-loader.load( 'models/hashicorp/hashicorp.dae', 
+loader.options.convertUpAxis = true;
+loader.load( 'models/riscv/riscv-logo.dae', 
 	function ( collada )
 	{
-		dae = collada.scene;
+		riscvLogo = collada.scene;
 
-		dae.scale.x = dae.scale.y = dae.scale.z = 4;
-		dae.updateMatrix();
+		riscvLogo.scale.x = riscvLogo.scale.y = riscvLogo.scale.z = 800;
+		riscvLogo.updateMatrix();
+	}
+);
+
+loader.load( 'models/riscv/riscv-text.dae', 
+	function ( collada )
+	{
+		riscvText = collada.scene;
+
+		riscvText.scale.x = riscvText.scale.y = riscvText.scale.z = 800;
+    riscvText.translateZ(2);
+		riscvText.updateMatrix();
 	
 		fedInit();
 		fedAnimate();
@@ -73,38 +80,49 @@ function fedInit()
 	fedContainer = document.getElementById( 'background' );
 
 	fedCam = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-	fedCam.position.set( 2, 2, 3 );
+	fedCam.position.set(0, 9, 10);
+  fedCam.lookAt(new THREE.Vector3(0,0,0));
+  fedCam.position.set(15, 10, 10);
 
 	fedScene = new THREE.Scene();
-	fedScene.add( dae );
 
-	particleLight = new THREE.Mesh( new THREE.SphereGeometry( 4, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0x333333 } ) );
-	particleLight.intensity = 5;
-	fedScene.add( particleLight );
+  for (var i = 0; i < 10; ++i)
+  {
+    var newob = riscvLogo.clone();
+    newob.position.set(i * 14, 2, 0);
+    fedScene.add( newob );
 
-	//fedScene.add( new THREE.AmbientLight( 0x040404 ) );
+    newob = riscvText.clone();
+    newob.position.set(i * 24, -2, 0);
+    fedScene.add( newob );
+  }
+
+	fedScene.add( new THREE.AmbientLight( 0x040404 ) );
 
 	var directionalLight = new THREE.DirectionalLight( 0x888888 );
-	//var directionalLight = new THREE.HemisphereLight();
-	directionalLight.intensity = 3;
-	directionalLight.position.x = -1;
+	directionalLight.intensity = 1;
+	directionalLight.position.x = 0;
 	directionalLight.position.y = 1;
-	directionalLight.position.z = -1;
+	directionalLight.position.z = 1;
 	directionalLight.position.normalize();
 	fedScene.add( directionalLight );
 	
-	var pointLight = new THREE.PointLight( 0x444444, 4 );
+  // Since this preso moves the camera instead of objects skip the particle light.
+	particleLight = new THREE.Mesh( new THREE.SphereGeometry( 4, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0x333333 } ) );
+	particleLight.intensity = 2;
+	fedScene.add( particleLight );
+
+  var pointLight = new THREE.PointLight( 0x444444, 4 );
 	pointLight.intensity=10;
 	particleLight.add( pointLight );
 
 	fedRenderer = new THREE.WebGLRenderer( {alpha:true} );
 	fedRenderer.setPixelRatio( window.devicePixelRatio );
 	fedRenderer.setSize( window.innerWidth, window.innerHeight );
-	fedRenderer.setClearColor( 0x101010 );
+	fedRenderer.setClearColor( 0 );
 	fedContainer.appendChild( fedRenderer.domElement );
 
 	window.addEventListener( 'resize', fedOnWindowResize, false );
-	fedCam.position.x = fedCam.position.y = fedCam.position.z = 7;
 }
 
 function fedOnWindowResize()
@@ -120,15 +138,19 @@ function fedAnimate()
 	var timer = Date.now() * 0.0002;
 	requestAnimationFrame( fedAnimate );
 
-	fedCam.lookAt( target );
+  particleLight.position.x = fedCam.position.x + Math.sin( timer ) * 50;
+  particleLight.position.y = 30;
+  particleLight.position.z = -30;
+	//particleLight.position.x = Math.sin( timer / 8 ) * 3009;
+	//particleLight.position.y = Math.cos( timer / 7 ) * 4000;
+	//particleLight.position.z = Math.cos( timer / 6 ) * 3009;
 
-	particleLight.position.x = Math.sin( timer / 8 ) * 3009;
-	particleLight.position.y = Math.cos( timer / 7 ) * 4000;
-	particleLight.position.z = Math.cos( timer / 6 ) * 3009;
+  fedCam.translateX(0.003);
+  if (fedCam.position.x > 111)
+    fedCam.position.x = 15;
 
-	dae.rotateZ(0.0004 * Math.sin(timer / 18));
-	dae.rotateY(0.0005 * Math.cos(timer / 25));
-	dae.rotateZ(0.0006 * Math.sin(timer / 30));
+  //riscvLogo.translateX(-0.003);
+  //riscvText.translateX(-0.002);
 
 	fedRender();
 }
